@@ -1,4 +1,7 @@
+from Parser import Parser
 from tkinter import filedialog, Tk
+
+p = Parser()
 
 def abrir():
     
@@ -24,21 +27,22 @@ def prueba ():
     txt = abrir()
     if txt is not None:
         dato = txt
-        gestor.obtenerData(dato)  
+        p.obtenerData(dato)  
     else:
         print("Error lectura")
 
 if __name__ == "__main__":
   
     print("Bienvenido")
-    opcion = int(input("Elije una opcion: \n 1.Cargar Archivo \n 2.Analizar Archivo \n 3.Ver Reporte \n 4.Seleccionar imagen \n 5.Ver Imagen \n 6.Salir"))
+    opcion = int(input("Elije una opcion: \n 1.Cargar Archivo \n 2.Analizar Archivo \n 3.Ver Reporte \n 4.Seleccionar imagen \n 5.Ver Imagen \n 6.Salir  \n"))
 
     
 
     while opcion != 6:
 
         if opcion == 1: #Cargar Archivo
-           pass
+           prueba()
+           print(p.tokens)
 
         elif opcion == 2: #Analizar Archivo
             pass
@@ -51,4 +55,4 @@ if __name__ == "__main__":
             
         else:
             print("Ingrese una opcion valida")
-        opcion = int(input("Elije una opcion: \n 1.Cargar Archivo \n 2.Analizar Archivo \n 3.Ver Reporte \n 4.Seleccionar imagen \n 5.Ver Imagen \n 6.Salir"))
+        opcion = int(input("Elije una opcion: \n 1.Cargar Archivo \n 2.Analizar Archivo \n 3.Ver Reporte \n 4.Seleccionar imagen \n 5.Ver Imagen \n 6.Salir \n"))
