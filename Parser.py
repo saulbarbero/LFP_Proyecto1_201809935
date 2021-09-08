@@ -1,8 +1,10 @@
+from Token import Token
+from Reservadas import PR
+
 class Parser:
     def __init__(self):
         self.tokens = []
         
-
 
     def obtenerData(self,data): #Me falta guardar caracteres de @ #
         estado = 0 #curso
@@ -21,6 +23,8 @@ class Parser:
                     estado = 2
                 elif(x =='['):
                     estado = 3
+                elif(x == "#"):
+                    estado = 4
                 else:
                     pass
             elif (estado ==1):
@@ -45,4 +49,12 @@ class Parser:
                     self.tokens.append(aux);
                     aux = ''  
                     estado = 0
+            elif(estado==4):
+                if(x!="]"):
+                    aux+=x
+                else:
+                    self.tokens.append(aux);
+                    aux = ''  
+                    estado = 0
+
                 
