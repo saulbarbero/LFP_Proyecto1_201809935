@@ -1,9 +1,12 @@
-from ListaSimple import ListaSimple
+import numpy as np
 from Parser import Parser
 from tkinter import filedialog, Tk
-
+from Figura import Figura
+from Reservadas import PR
+from Celda import Celda
 p = Parser()
-figuras = ListaSimple()
+figuras =  []
+
 
 def abrir():
     
@@ -29,53 +32,66 @@ def prueba ():
     txt = abrir()
     if txt is not None:
         dato = txt
+        dato+="@"
         p.obtenerData(dato)  
     else:
         print("Error lectura")
 
 
-def llenarTerrenos(lista):
-        figura = ''
+def llenarFigura(lista):
+        titulo = ''
+        ancho = 0
+        alto = 0
+        filas = 0
+        columnas = 0
+        celdas=[]
+        filtros = []
+        validacion = ''
         i = 0
         end = len(lista)
-        num_rows=0
-        num_cols=0
         while i< end:
-            x=lista[i];
-            if(x=='t'):
-                if(figura==''):
-                    figura = Figura()
+            token = lista[i]
+            if token.token == PR.CADENA :
+                titulo = token.lexema
+            elif token.token == PR.ID:
+                if(validacion=="filtros"):
+                    filtros.append(token.lexema)
                 else:
-                    figuras.insertar(figura)
-                    figura=''
+                    validacion = token.lexema
+            elif token.token == PR.NUM:
+                if(validacion=="ancho"):
+                    ancho = token.lexema
+                elif(validacion=="alto"):
+                    alto = token.lexema
+                elif(validacion=="filas"):
+                    filas = token.lexema
+                elif(validacion=="columnas"):
+                    columnas = token.lexema
+                elif(validacion=="celdas"):
+                    celda = Celda()
+                    celda.x= token.lexema
+                    i+=2
+                    token = lista[i]
+                    celda.y= token.lexema
+                    i+=2
+                    token = lista[i]
+                    celda.activo = token.lexema
+                    i+=2
+                    token = lista[i]
+                    celda.color = token.lexema
+                    celdas.append(celda)
 
-            elif(x=='titulo'):
-                i+=1
-                figura.titulo = lista[i]
-
-            elif(x=='ancho'):
-                i+=2
-                figura.ancho = int(lista[i])-1
-                i+=1
-            elif(x=='alto'):
-                i+=2
-                figura.alto = int(lista[i])-1
-                i+=1
-            elif(x=='filas'):
-                i+=2
-                figura.n = int(lista[i])-1
-                i+=1
-            elif(x=='columnas'):
-                i+=2
-                figura.m = int(lista[i])-1
-                i+=1
-            elif(x=='filtros'): #Aqui no se si esta bien
-                i+=2
-                figura.filtro.append(int(lista[i])-1)
-                i+=1
-            else:
-                pass
-            i+=1
+            elif token.lexema == "@":
+                if(titulo!=''):
+                    figuras.append(Figura(titulo,ancho,alto,filas,columnas,filtros,celdas))
+                    titulo = ''
+                    ancho = 0
+                    alto = 0
+                    filas = 0
+                    columnas = 0
+                    celdas=[]
+                    filtros = []
+                    validacion = ''
 
 if __name__ == "__main__":
   
@@ -87,10 +103,12 @@ if __name__ == "__main__":
     while opcion != 6:
 
         if opcion == 1: #Cargar Archivo
-           prueba()
-           print(p.tokens)
+            prueba()
+            for token in p.tokens:
+                print(token.lexema)
+            print(p.lista_errores)
 
-        elif opcion == 2: #Analizar Archivo
+        elif opcion == 2: #Generar imagen
             pass
         elif opcion == 3: #Ver Reporte
             pass
