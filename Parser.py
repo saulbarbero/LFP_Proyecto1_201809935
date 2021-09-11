@@ -1,18 +1,26 @@
 from Token import Token
 from Reservadas import PR
-
 class Parser:
     def __init__(self):
         self.tokens = []
         
 
-    def obtenerData(self,data): #Me falta guardar caracteres de @ #
-        estado = 0 #curso
+
+    def obtenerData(self,data): 
+        estado = 0 
         aux = ''
-        for x in data:
+        fila = 1
+        columna =0
+        i = range(len(data))
+        for x in i:
             if(estado==0):
-                if(x == '=' or x == ' ' or x == '"'or x == ';' or x == ',' or x== '{'  or x == '}'  or x == '['  or x == ']' or x == '\r' or x == '\t' or x == '\n'): #Ignorar
+                if(x == '=' or x == ' ' or x == ';' or x == ',' or x== '{'  or x == '}'  or x == '['  or x == ']' or x == '\r' or x == '\t' ): #Ignorar
+                    t = Token(PR.SYMBOL,aux,fila,columna)
+                    self.token.append(t)
                     pass   
+                elif(x == '\n'):
+                    fila+=1
+                    columna=0
                 elif(x.isalpha()):
                     aux +=x
                     estado = 1
@@ -21,40 +29,52 @@ class Parser:
                     estado = 3
                 elif(x == '"'):
                     estado = 2
-                elif(x =='['):
-                    estado = 3
-                elif(x == "#"):
+                elif(x == '#'):
                     estado = 4
                 else:
+                    #Guardar error
                     pass
-            elif (estado ==1):
+            elif (estado ==1): #ID 
                 if(x.isalpha()):
-                    aux+=x
+                    aux +=x
+                    columna+=1
                 else:
-                    self.tokens.append(aux);
-                    aux = '' 
-                    estado = 0 
+                    t = Token(PR.ID,aux,fila,columna)
+                    self.token.append(t) 
+                    estado = 0
+                    i-=1
+                    aux = ''
                     
-            elif(estado ==2):
+            elif(estado ==2): #Cualquier cadena "cadena"
                 if(x!='"'):
-                    aux+=x
+                    aux +=x
+                    columna+=1
                 else:
-                    self.tokens.append(aux);
-                    aux = ''  
+                    t = Token(PR.CADENA,aux,fila,columna)
+                    self.token.append(t) 
                     estado = 0
-            elif(estado==3):
+                    i-=1
+                    aux = ''
+            elif(estado==3): #Cualquier numero
                 if(x.isdigit()):
-                    aux+=x
+                    aux +=x
+                    columna+=1
                 else:
-                    self.tokens.append(aux);
-                    aux = ''  
+                    t = Token(PR.NUM,aux,fila,columna)
+                    self.token.append(t) 
                     estado = 0
-            elif(estado==4):
-                if(x!="]"):
-                    aux+=x
+                    i-=1
+                    aux = ''
+            elif(estado==4): #Codigo Hexadecimal
+                if(x.isalpha() or x.isdigit()):
+                    aux +=x
+                    columna+=1
                 else:
-                    self.tokens.append(aux);
-                    aux = ''  
+                    t = Token(PR.CODIGO,aux,fila,columna)
+                    self.token.append(t)
                     estado = 0
+                    i-=1
+                    columna-=1
+                    aux = ''
 
                 

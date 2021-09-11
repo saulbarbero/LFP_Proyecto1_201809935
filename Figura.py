@@ -1,9 +1,10 @@
 
 class Figura:
-    def __init__(self):
-        self.titulo = ''
-        self.ancho = 0
-        self.alto = 0
-        self.n = 0 #Rows
-        self.m = 0 #Colum
-        self.filtro = ''
+    def __init__(self,titulo,ancho,alto,n,m,filtro,celdas):
+        self.titulo = titulo
+        self.ancho = ancho
+        self.alto = alto
+        self.n = n #Rows
+        self.m = m #Colums
+        self.filtro = filtro
+        self.celdas = celdas

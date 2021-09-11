@@ -1,7 +1,9 @@
+from ListaSimple import ListaSimple
 from Parser import Parser
 from tkinter import filedialog, Tk
 
 p = Parser()
+figuras = ListaSimple()
 
 def abrir():
     
@@ -30,6 +32,50 @@ def prueba ():
         p.obtenerData(dato)  
     else:
         print("Error lectura")
+
+
+def llenarTerrenos(lista):
+        figura = ''
+        i = 0
+        end = len(lista)
+        num_rows=0
+        num_cols=0
+        while i< end:
+            x=lista[i];
+            if(x=='t'):
+                if(figura==''):
+                    figura = Figura()
+                else:
+                    figuras.insertar(figura)
+                    figura=''
+
+            elif(x=='titulo'):
+                i+=1
+                figura.titulo = lista[i]
+
+            elif(x=='ancho'):
+                i+=2
+                figura.ancho = int(lista[i])-1
+                i+=1
+            elif(x=='alto'):
+                i+=2
+                figura.alto = int(lista[i])-1
+                i+=1
+            elif(x=='filas'):
+                i+=2
+                figura.n = int(lista[i])-1
+                i+=1
+            elif(x=='columnas'):
+                i+=2
+                figura.m = int(lista[i])-1
+                i+=1
+            elif(x=='filtros'): #Aqui no se si esta bien
+                i+=2
+                figura.filtro.append(int(lista[i])-1)
+                i+=1
+            else:
+                pass
+            i+=1
 
 if __name__ == "__main__":
   
