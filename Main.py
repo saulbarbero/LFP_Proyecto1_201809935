@@ -57,22 +57,22 @@ def llenarFigura(lista):
                 if(validacion=="filtros"):
                     filtros.append(token.lexema)
                 else:
-                    validacion = token.lexema
+                    validacion =token.lexema.lower()
             elif token.token == PR.NUM:
                 if(validacion=="ancho"):
-                    ancho = token.lexema
+                    ancho = int(token.lexema)
                 elif(validacion=="alto"):
-                    alto = token.lexema
+                    alto = int(token.lexema)
                 elif(validacion=="filas"):
-                    filas = token.lexema
+                    filas = int(token.lexema)
                 elif(validacion=="columnas"):
-                    columnas = token.lexema
+                    columnas = int(token.lexema)
                 elif(validacion=="celdas"):
                     celda = Celda()
-                    celda.x= token.lexema
+                    celda.x= int(token.lexema)
                     i+=2
                     token = lista[i]
-                    celda.y= token.lexema
+                    celda.y= int(token.lexema)
                     i+=2
                     token = lista[i]
                     celda.activo = token.lexema
@@ -92,6 +92,11 @@ def llenarFigura(lista):
                     celdas=[]
                     filtros = []
                     validacion = ''
+            i+=1
+
+                    
+
+    
 
 if __name__ == "__main__":
   
@@ -104,11 +109,13 @@ if __name__ == "__main__":
 
         if opcion == 1: #Cargar Archivo
             prueba()
-            for token in p.tokens:
-                print(token.lexema)
-            print(p.lista_errores)
+            llenarFigura(p.tokens)
+            print(figuras)
+            figuras[0].generarImagen()
+                
 
         elif opcion == 2: #Generar imagen
+            
             pass
         elif opcion == 3: #Ver Reporte
             pass
