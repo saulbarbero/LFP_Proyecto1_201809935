@@ -30,7 +30,7 @@ class Figura:
         <html>
         <head>
         <!-- Referencias a hojas de estilos, en este caso un CSS -->
-        <link rel="stylesheet" href="mario.css">
+        <link rel="stylesheet" href="%p.css">
         </head>
         <body>
         <!-- div que representa el lienzo -->
@@ -47,19 +47,20 @@ class Figura:
         }
 
         .canvas {
-            width: w$ px;   /* Ancho del lienzo, se asocia al ANCHO de la entrada */
-            height: h$ px;  /* Alto del lienzo, se asocia al ALTO de la entrada */
+            width: w$px;   /* Ancho del lienzo, se asocia al ANCHO de la entrada */
+            height: h$px;  /* Alto del lienzo, se asocia al ALTO de la entrada */
         }
 
         .pixel {
-            width: w@ px;    /* Ancho de cada pixel, se obtiene al operar ANCHO/COLUMNAS (al hablar de pixeles el resultado de la división debe ser un numero entero) */
-            height: h@ px;   /* Alto de cada pixel, se obtiene al operar ALTO/FILAS (al hablar de pixeles el resultado de la división debe ser un numero entero) */
+            width: w@px;    /* Ancho de cada pixel, se obtiene al operar ANCHO/COLUMNAS (al hablar de pixeles el resultado de la división debe ser un numero entero) */
+            height: h@px;   /* Alto de cada pixel, se obtiene al operar ALTO/FILAS (al hablar de pixeles el resultado de la división debe ser un numero entero) */
             float: left;
             box-shadow: 0px 0px 1px #fff; /*Si lo comentan se quita la cuadricula de fondo */
         }
         '''
         texto_css= texto_css.replace("w$",str(self.ancho))
         texto_css= texto_css.replace("h$",str(self.alto))
+        texto_css= texto_css.replace("%p",self.titulo)
 
         texto_css= texto_css.replace("w@",str(math.trunc(self.ancho/self.m)))
         texto_css= texto_css.replace("h@",str(math.trunc(self.alto/self.n)))
@@ -87,10 +88,10 @@ class Figura:
         </body>
         </html>
         '''
-        f = open("mario.css", "w")
+        f = open("figura.", "w")
         f.write(texto_css)
         f.close()
-        f = open("mario.html", "w")
+        f = open(self.titulo+".html", "w")
         f.write(texto_html)
         f.close()
 
