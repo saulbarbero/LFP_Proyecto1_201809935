@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import re
 
 class Figura:
     def __init__(self,titulo,ancho,alto,n,m,filtro,celdas):
@@ -30,7 +31,7 @@ class Figura:
         <html>
         <head>
         <!-- Referencias a hojas de estilos, en este caso un CSS -->
-        <link rel="stylesheet" href="%p.css">
+        <link rel="stylesheet" href="p$.css">
         </head>
         <body>
         <!-- div que representa el lienzo -->
@@ -58,12 +59,15 @@ class Figura:
             box-shadow: 0px 0px 1px #fff; /*Si lo comentan se quita la cuadricula de fondo */
         }
         '''
+        titulo_n = re.sub("\"","",self.titulo)
+        
         texto_css= texto_css.replace("w$",str(self.ancho))
         texto_css= texto_css.replace("h$",str(self.alto))
-        texto_css= texto_css.replace("%p",self.titulo)
 
         texto_css= texto_css.replace("w@",str(math.trunc(self.ancho/self.m)))
         texto_css= texto_css.replace("h@",str(math.trunc(self.alto/self.n)))
+
+        texto_html= texto_html.replace("p$",titulo_n)
         i = 0 
         conteo = 0
         while(i<self.n): #Recorrer en y
@@ -88,10 +92,12 @@ class Figura:
         </body>
         </html>
         '''
-        f = open("figura.", "w")
+        
+        print(self.titulo)
+        f = open(titulo_n+".css", "w")
         f.write(texto_css)
         f.close()
-        f = open(self.titulo+".html", "w")
+        f = open(titulo_n+".html", "w")
         f.write(texto_html)
         f.close()
 

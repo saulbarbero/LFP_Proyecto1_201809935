@@ -1,6 +1,6 @@
 import numpy as np
 from Parser import Parser
-from tkinter import filedialog, Tk
+from tkinter import Menu, filedialog,Tk
 from Figura import Figura
 from Reservadas import PR
 from Celda import Celda
@@ -94,13 +94,56 @@ def llenarFigura(lista):
                     validacion = ''
             i+=1
 
+def cargarArchivos():
+    prueba()
+    llenarFigura(p.tokens)
+    print(figuras)
+    figuras[1].generarImagen()
+
+
                     
 
     
 
 if __name__ == "__main__":
+    
+    ventana = Tk()
+    ventana.geometry("800x600+50+50")
+    ventana.title("Menu")
+    barraMenu=Menu(ventana)
+    cargarArchivo=Menu(barraMenu)
+    generarImagen=Menu(barraMenu)
+    verReporte=Menu(barraMenu)
+    verImagen=Menu(barraMenu)
+    salir = Menu(barraMenu)
+
+    cargarArchivo.add_command(label="Abrir",command=cargarArchivos)
+
+    generarImagen.add_command(label="Generar imagenes")
+
+    verReporte.add_command(label="Tokens")
+    verReporte.add_command(label="Errores")
+
+    verImagen.add_command(label="Original")
+    verImagen.add_command(label="MirroX")
+    verImagen.add_command(label="MirroY")
+    verImagen.add_command(label="DoubleMirror")
+
+    salir.add_command(label="Salir",command=ventana.destroy)
+
+
+
+    barraMenu.add_cascade(label="Archivo",menu=cargarArchivo)
+    barraMenu.add_cascade(label="Generar",menu=generarImagen)
+    barraMenu.add_cascade(label="Reporte",menu=verReporte)
+    barraMenu.add_cascade(label="Imagen",menu=verImagen)
+    barraMenu.add_cascade(label="Salir",menu=salir)
+
+
+    ventana.config(menu=barraMenu)
+    ventana.mainloop()
   
-    print("Bienvenido")
+    '''print("Bienvenido")
     opcion = int(input("Elije una opcion: \n 1.Cargar Archivo \n 2.Analizar Archivo \n 3.Ver Reporte \n 4.Seleccionar imagen \n 5.Ver Imagen \n 6.Salir  \n"))
 
     
@@ -111,7 +154,7 @@ if __name__ == "__main__":
             prueba()
             llenarFigura(p.tokens)
             print(figuras)
-            figuras[0].generarImagen()
+            figuras[1].generarImagen()
                 
 
         elif opcion == 2: #Generar imagen
@@ -127,3 +170,4 @@ if __name__ == "__main__":
         else:
             print("Ingrese una opcion valida")
         opcion = int(input("Elije una opcion: \n 1.Cargar Archivo \n 2.Analizar Archivo \n 3.Ver Reporte \n 4.Seleccionar imagen \n 5.Ver Imagen \n 6.Salir \n"))
+'''
