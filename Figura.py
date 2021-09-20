@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import re
+import imgkit
 
 class Figura:
     def __init__(self,titulo,ancho,alto,n,m,filtro,celdas):
@@ -60,9 +61,9 @@ class Figura:
         }
         '''
         titulo_n = re.sub("\"","",self.titulo)
-        
         texto_css= texto_css.replace("w$",str(self.ancho))
         texto_css= texto_css.replace("h$",str(self.alto))
+        
 
         texto_css= texto_css.replace("w@",str(math.trunc(self.ancho/self.m)))
         texto_css= texto_css.replace("h@",str(math.trunc(self.alto/self.n)))
@@ -80,28 +81,35 @@ class Figura:
                         background: code ; /* Todo lo que este agrupado separado por comas antes de esta parte { background:..... } se le va a asignar el color indicado*/
                     }
                     '''
-                    texto_html+='<div class="pixel"></div>\n'
                     texto_css= texto_css.replace("code",self.matriz[i,j])
                     texto_css= texto_css.replace("num",str(conteo))
 
                 j+=1
             i+=1
-        
+        for i in range(self.n*self.m):
+            texto_html+='<div class="pixel"></div>\n'
         texto_html+='''
         </div>
         </body>
         </html>
         '''
         
-        print(self.titulo)
+
         f = open(titulo_n+".css", "w")
         f.write(texto_css)
         f.close()
         f = open(titulo_n+".html", "w")
         f.write(texto_html)
         f.close()
+        options = {
+            "enable-local-file-access": None
+        }
 
+        
+        imgkit.from_file(titulo_n+".html", titulo_n+".jpg")
+        
 
         print(texto_css)
+
 
 

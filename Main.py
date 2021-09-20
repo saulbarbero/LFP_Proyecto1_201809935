@@ -1,11 +1,15 @@
+from Reporte import Reporte
 import numpy as np
 from Parser import Parser
 from tkinter import Menu, filedialog,Tk
 from Figura import Figura
 from Reservadas import PR
 from Celda import Celda
+from Reporte import Reporte
 p = Parser()
+r = Reporte()
 figuras =  []
+
 
 
 def abrir():
@@ -97,8 +101,13 @@ def llenarFigura(lista):
 def cargarArchivos():
     prueba()
     llenarFigura(p.tokens)
-    print(figuras)
-    figuras[1].generarImagen()
+    #r.reporteToken()
+    
+    
+    for i in range(len(figuras)):
+     figuras[i].generarImagen()
+    
+    print(p.tokens)
 
 
                     
