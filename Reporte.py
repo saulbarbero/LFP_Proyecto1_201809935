@@ -1,15 +1,77 @@
 from Token import Token
 from Parser import Parser
+from Error import Error
 from tkinter import *
 from tkinter import messagebox as MessageBox
+from Reservadas import PR
 class Reporte:
     def __init__(self):
         var=0
 
-    def reporteToken():
-        token = Token()
+    def reporteErrores(self,lista_errores):
         bloque=""
-        f = open('reporte.html','w')
+        f = open('reporteErrores.html','w')
+
+        text_reporte = '''<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+                <title>Reporte Errores</title>
+
+                
+                <link rel="stylesheet" href="style.css" />
+            </head>
+
+            <h2>Tabla de Errores</h2>
+            <div class="table-wrapper">
+                <table class="fl-table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cadena</th>
+                        <th>Fila</th>
+                        <th>Columna</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+            '''
+        i = 0
+
+        for error in lista_errores:
+            print(error.cadena)
+            i+=1
+            bloque+='''
+                    <tr>
+                        <td>'''+str(i)+'''</td>
+                        <td>'''+str(error.cadena)+'''</td>
+                        <td>'''+str(error.fila)+'''</td>
+                        <td>'''+str(error.columna)+'''</td>
+			        </tr>
+            
+            '''
+
+            text_reporte+=bloque
+
+        text_reporte+='''
+                        </tbody>
+                </table>
+            </div>
+        '''
+        
+        f.write(text_reporte)
+        f.close()
+        MessageBox.showinfo("Reporte creado con Exito") # título, mensaje
+
+
+
+
+
+    def reporteToken(self,lista_token):
+        bloque=""
+        f = open('reporteToken.html','w')
 
         text_reporte = '''<!DOCTYPE html>
             <html lang="en">
@@ -38,45 +100,35 @@ class Reporte:
                     <tbody>
 
             '''
-
-        for i in range(len(token)):
+        i = 0
+        pr = PR(1)
+        
+        for i in range(len(lista_token)):
+            x = lista_token[i]
+            
+            print(x.lexema)
+            
             bloque+='''
                     <tr>
-                        <td>Cell1</td>
-                        <td>Cell2</td>
-                        <td>Cell3</td>
-                        <td>Cell4</td>
-                        <td>Cell5</td>
-			        </tr>
-            
+                        <td>'''+str(i)+'''</td>
+                        <td>'''+str(x.token)+'''</td>
+                        <td>'''+str(x.lexema)+'''</td>
+                        <td>'''+str(x.fila)+'''</td>
+                        <td>'''+str(x.columna)+'''</td>
+                    </tr>
+                
             '''
-            bloque = bloque.replace("Cell1",str(i))
-            bloque = bloque.replace("Cell2",str(token.token))
-            bloque = bloque.replace("Cell3",str(token.lexema))
-            bloque = bloque.replace("Cell4",str(token.fila))
-            bloque = bloque.replace("Cell2",str(token.columna))
 
             text_reporte+=bloque
-            text_reporte+='''
-                            </tbody>
-                    </table>
-                </div>
-
+        i+=1
             
-            '''
+
+        text_reporte+='''
+                        </tbody>
+                </table>
+            </div>
+        '''
         
-
-
-
-        
-
-        
-
-
-
-
-                   
-
         f.write(text_reporte)
         f.close()
         MessageBox.showinfo("Reporte creado con Exito") # título, mensaje

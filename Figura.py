@@ -1,4 +1,5 @@
 import math
+from tkinter import messagebox as MessageBox
 import numpy as np
 import re
 import imgkit
@@ -23,9 +24,93 @@ class Figura:
             else:
                 self.matriz[celda.y,celda.x]= "       "
 
-        print(self.matriz)
-                
-    def generarImagen(self):
+        
+    def mirrorN(self):
+        texto_css = ""
+        i = 0
+        conteo = 0
+        while(i<self.n): #Recorrer en y
+            j = 0
+            while(j<self.m): #Recorrer x
+                conteo+=1
+                if(self.matriz[i,j]!="       "):
+                    texto_css+='''
+                    .pixel:nth-child(num){
+                        background: code ; /* Todo lo que este agrupado separado por comas antes de esta parte { background:..... } se le va a asignar el color indicado*/
+                    }
+                    '''
+                    texto_css= texto_css.replace("code",self.matriz[i,j])
+                    texto_css= texto_css.replace("num",str(conteo))
+
+                j+=1
+            i+=1
+        return texto_css 
+
+    def mirrorD(self):
+        texto_css = ""
+        i = self.n-1
+        conteo = 0
+        while(i>=0): #Recorrer en y
+            j = self.m-1
+            while(j>=0): #Recorrer x
+                conteo+=1
+                if(self.matriz[i,j]!="       "):
+                    texto_css+='''
+                    .pixel:nth-child(num){
+                        background: code ; /* Todo lo que este agrupado separado por comas antes de esta parte { background:..... } se le va a asignar el color indicado*/
+                    }
+                    '''
+                    texto_css= texto_css.replace("code",self.matriz[i,j])
+                    texto_css= texto_css.replace("num",str(conteo))
+
+                j-=1
+            i-=1
+        return texto_css
+
+    def mirrorY(self):
+        texto_css = ""
+        i = self.n-1
+        conteo = 0
+        while(i>=0): #Recorrer en y
+            j = 0
+            while(j<self.m): #Recorrer x
+                conteo+=1
+                if(self.matriz[i,j]!="       "):
+                    texto_css+='''
+                    .pixel:nth-child(num){
+                        background: code ; /* Todo lo que este agrupado separado por comas antes de esta parte { background:..... } se le va a asignar el color indicado*/
+                    }
+                    '''
+                    texto_css= texto_css.replace("code",self.matriz[i,j])
+                    texto_css= texto_css.replace("num",str(conteo))
+
+                j+=1
+            i-=1
+        return texto_css
+
+
+    def mirrorX(self):
+        texto_css = ""
+        i = 0
+        conteo = 0
+        while(i<self.n): #Recorrer en y
+            j = self.m-1
+            while(j>=0): #Recorrer x
+                conteo+=1
+                if(self.matriz[i,j]!="       "):
+                    texto_css+='''
+                    .pixel:nth-child(num){
+                        background: code ; /* Todo lo que este agrupado separado por comas antes de esta parte { background:..... } se le va a asignar el color indicado*/
+                    }
+                    '''
+                    texto_css= texto_css.replace("code",self.matriz[i,j])
+                    texto_css= texto_css.replace("num",str(conteo))
+
+                j-=1
+            i+=1
+        return texto_css
+
+    def generarImagen(self, filtro):
 
         texto_html='''
         <!DOCTYPE html>
@@ -68,24 +153,19 @@ class Figura:
         texto_css= texto_css.replace("w@",str(math.trunc(self.ancho/self.m)))
         texto_css= texto_css.replace("h@",str(math.trunc(self.alto/self.n)))
 
-        texto_html= texto_html.replace("p$",titulo_n)
-        i = 0 
-        conteo = 0
-        while(i<self.n): #Recorrer en y
-            j = 0
-            while(j<self.m): #Recorrer x
-                conteo+=1
-                if(self.matriz[i,j]!="       "):
-                    texto_css+='''
-                    .pixel:nth-child(num){
-                        background: code ; /* Todo lo que este agrupado separado por comas antes de esta parte { background:..... } se le va a asignar el color indicado*/
-                    }
-                    '''
-                    texto_css= texto_css.replace("code",self.matriz[i,j])
-                    texto_css= texto_css.replace("num",str(conteo))
+        texto_html= texto_html.replace("p$",titulo_n+"_"+filtro)
+        
+        texto_n = texto_css
+        if filtro == 'MIRRORX':
+            texto_css+=self.mirrorX()
+        if filtro == 'MIRRORY':
+            texto_css+=self.mirrorY()
+        if filtro == 'MIRRORN':
+            texto_css+=self.mirrorN()
+        if filtro == 'MIRRORD':
+            texto_css+=self.mirrorD()
 
-                j+=1
-            i+=1
+        i=0
         for i in range(self.n*self.m):
             texto_html+='<div class="pixel"></div>\n'
         texto_html+='''
@@ -95,10 +175,10 @@ class Figura:
         '''
         
 
-        f = open(titulo_n+".css", "w")
+        f = open(titulo_n+"_"+filtro+".css", "w")
         f.write(texto_css)
         f.close()
-        f = open(titulo_n+".html", "w")
+        f = open(titulo_n+"_"+filtro+".html", "w")
         f.write(texto_html)
         f.close()
         options = {
@@ -106,10 +186,9 @@ class Figura:
         }
 
         
-        imgkit.from_file(titulo_n+".html", titulo_n+".jpg")
+        imgkit.from_file(titulo_n+"_"+filtro+".html", titulo_n+"_"+filtro+".jpg")
         
-
-        print(texto_css)
+        
 
 
 
