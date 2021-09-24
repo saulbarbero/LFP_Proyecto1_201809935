@@ -1,3 +1,4 @@
+from os import error
 from Token import Token
 from Parser import Parser
 from Error import Error
@@ -9,7 +10,7 @@ class Reporte:
         var=0
 
     def reporteErrores(self,lista_errores):
-        bloque=""
+        
         f = open('reporteErrores.html','w')
 
         text_reporte = '''<!DOCTYPE html>
@@ -39,11 +40,12 @@ class Reporte:
 
             '''
         i = 0
-
-        for error in lista_errores:
+        size = len(lista_errores)
+        while(i<size):
+            error = lista_errores[i]
             print(error.cadena)
-            i+=1
-            bloque+='''
+                
+            text_reporte+='''
                     <tr>
                         <td>'''+str(i)+'''</td>
                         <td>'''+str(error.cadena)+'''</td>
@@ -52,8 +54,7 @@ class Reporte:
 			        </tr>
             
             '''
-
-            text_reporte+=bloque
+            i+=1
 
         text_reporte+='''
                         </tbody>
@@ -63,14 +64,14 @@ class Reporte:
         
         f.write(text_reporte)
         f.close()
-        MessageBox.showinfo("Reporte creado con Exito") # título, mensaje
+        MessageBox.showinfo("Reporte","Reporte creado con Exito") # título, mensaje
 
 
 
 
 
     def reporteToken(self,lista_token):
-        bloque=""
+        
         f = open('reporteToken.html','w')
 
         text_reporte = '''<!DOCTYPE html>
@@ -101,14 +102,12 @@ class Reporte:
 
             '''
         i = 0
-        pr = PR(1)
-        
-        for i in range(len(lista_token)):
+        size = len(lista_token)
+        while(i<size):
             x = lista_token[i]
-            
             print(x.lexema)
-            
-            bloque+='''
+                
+            text_reporte+='''
                     <tr>
                         <td>'''+str(i)+'''</td>
                         <td>'''+str(x.token)+'''</td>
@@ -116,13 +115,11 @@ class Reporte:
                         <td>'''+str(x.fila)+'''</td>
                         <td>'''+str(x.columna)+'''</td>
                     </tr>
-                
+                    
             '''
 
-            text_reporte+=bloque
-        i+=1
             
-
+            i+=1
         text_reporte+='''
                         </tbody>
                 </table>
@@ -131,6 +128,6 @@ class Reporte:
         
         f.write(text_reporte)
         f.close()
-        MessageBox.showinfo("Reporte creado con Exito") # título, mensaje
+        MessageBox.showinfo("Reporte","Reporte creado con Exito") # título, mensaje
 
 
