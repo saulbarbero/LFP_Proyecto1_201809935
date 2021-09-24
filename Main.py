@@ -66,7 +66,11 @@ def llenarFigura(lista):
                 titulo = token.lexema
             elif token.token == PR.ID:
                 if(validacion=="filtros"):
-                    filtros.append(token.lexema)
+                    if (token.lexema == "MIRRORX" or token.lexema == "MIRRORY" or token.lexema == "DOUBLEMIRROR"):
+                        filtros.append(token.lexema)
+                    else:
+                        MessageBox.showwarning(title="Carga",message="Filtro erroneo")
+                        
                 else:
                     validacion =token.lexema.lower()
             elif token.token == PR.NUM:
@@ -108,7 +112,7 @@ def llenarFigura(lista):
 def cargarArchivos():
     prueba()
     llenarFigura(p.tokens)
-    MessageBox.showinfo(title="Carga",message="Exito") # título, mensaje
+    
 
 def generarTokens():
     r.reporteToken(p.tokens)
